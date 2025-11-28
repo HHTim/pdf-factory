@@ -21,6 +21,7 @@ PDF Factory 是一個使用 OpenPDF 的專業 PDF 處理服務，提供兩大核
 - **框架**: Spring Boot 3.2.0
 - **Java 版本**: 17
 - **PDF 函式庫**: OpenPDF 1.3.34
+- **加密庫**: BouncyCastle 1.78.1 (處理 PDF 加密/解密)
 - **授權**: LGPL/MPL（商業友善）
 - **Package**: `com.pdffactory`
 
@@ -167,6 +168,23 @@ Swagger UI 提供：
 1. 執行 `java -jar lombok.jar` 安裝 Lombok
 2. 重啟 Eclipse
 3. 開啟專案
+
+## 重要依賴說明
+
+### BouncyCastle 加密庫
+
+本專案使用 **BouncyCastle** 處理 PDF 加密和解密功能。當處理有密碼保護的 PDF 時，此依賴是**必需的**。
+
+**已包含的依賴**:
+- `bcprov-jdk18on` 1.78.1 - 核心加密提供者
+- `bcpkix-jdk18on` 1.78.1 - PKI 和 CMS 支援
+
+**為何需要**:
+- 讀取加密 PDF 時解密
+- 套用安全性設定時加密
+- 支援 RC4 和 AES 加密演算法
+
+**錯誤提示**: 如果看到 `ClassNotFoundException: org.bouncycastle.*` 或 PDF 解密失敗，請確認已正確添加此依賴。
 
 ## 安全性設定範例
 

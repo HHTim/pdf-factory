@@ -47,6 +47,18 @@
             <version>${openpdf.version}</version>
         </dependency>
 
+        <!-- BouncyCastle - Required for PDF Encryption/Decryption -->
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk18on</artifactId>
+            <version>1.78.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcpkix-jdk18on</artifactId>
+            <version>1.78.1</version>
+        </dependency>
+
         <!-- Lombok - Reduce Boilerplate Code -->
         <dependency>
             <groupId>org.projectlombok</groupId>
