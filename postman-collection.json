@@ -1,0 +1,179 @@
+{
+  "info": {
+    "name": "PDF Factory API",
+    "description": "PDF Factory API 測試集合 - 所有 API 均使用 POST + RequestBody\n\n包含兩種服務:\n1. PDF Rewriter Service - 讀取舊 PDF, 替換 iText 套件, 保留安全性設定\n2. PDF Security Service - 根據傳參產生新的安全 PDF",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "PDF Rewriter Service (舊 PDF 重寫)",
+      "item": [
+        {
+          "name": "1. 重寫 PDF (檔案路徑)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"inputPath\": \"/path/to/input.pdf\",\n  \"outputPath\": \"/path/to/output.pdf\",\n  \"ownerPassword\": \"your_password\",\n  \"preserveSecurity\": true\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/pdf/rewrite",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "pdf", "rewrite"]
+            }
+          }
+        },
+        {
+          "name": "2. 上傳並重寫 PDF (Base64)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pdfFileBase64\": \"JVBERi0xLjQKJeLjz9MK...\",\n  \"fileName\": \"document.pdf\",\n  \"ownerPassword\": \"your_password\",\n  \"userPassword\": null,\n  \"preserveSecurity\": true\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/pdf/upload-and-rewrite",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "pdf", "upload-and-rewrite"]
+            }
+          }
+        },
+        {
+          "name": "3. 查詢 PDF 安全性資訊",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"filePath\": \"/path/to/file.pdf\",\n  \"password\": \"your_password\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/pdf/security-info",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "pdf", "security-info"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "PDF Security Service (新安全 PDF)",
+      "item": [
+        {
+          "name": "1. 套用安全性到 PDF (根據圖片設定)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pdfFileBase64\": \"JVBERi0xLjQKJeLjz9MK...\",\n  \"fileName\": \"document.pdf\",\n  \"allowPrinting\": \"Y\",\n  \"allowHighQualityPrinting\": \"Y\",\n  \"allowAssembly\": \"N\",\n  \"allowCopy\": \"N\",\n  \"allowScreenReaders\": \"N\",\n  \"allowModifyContents\": \"N\",\n  \"allowModifyAnnotations\": \"N\",\n  \"allowFillIn\": \"N\",\n  \"userPassword\": null,\n  \"ownerPassword\": \"test123456\",\n  \"encryptionType\": \"RC4_128\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/pdf/apply-security",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "pdf", "apply-security"]
+            }
+          }
+        },
+        {
+          "name": "2. 建立新的安全 PDF",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"測試安全PDF文件\",\n  \"content\": \"這是一份使用 OpenPDF 產生的加密 PDF 文件。\",\n  \"allowPrinting\": \"Y\",\n  \"allowHighQualityPrinting\": \"Y\",\n  \"allowAssembly\": \"N\",\n  \"allowCopy\": \"N\",\n  \"allowScreenReaders\": \"N\",\n  \"allowModifyContents\": \"N\",\n  \"allowModifyAnnotations\": \"N\",\n  \"allowFillIn\": \"N\",\n  \"userPassword\": null,\n  \"ownerPassword\": \"test123456\",\n  \"encryptionType\": \"RC4_128\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/pdf/create-secured",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "pdf", "create-secured"]
+            }
+          }
+        },
+        {
+          "name": "3. 建立安全 PDF (全部禁止)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"完全保護PDF\",\n  \"content\": \"這是一份完全保護的 PDF 文件，所有權限皆禁止。\",\n  \"allowPrinting\": \"N\",\n  \"allowHighQualityPrinting\": \"N\",\n  \"allowAssembly\": \"N\",\n  \"allowCopy\": \"N\",\n  \"allowScreenReaders\": \"N\",\n  \"allowModifyContents\": \"N\",\n  \"allowModifyAnnotations\": \"N\",\n  \"allowFillIn\": \"N\",\n  \"userPassword\": \"user123\",\n  \"ownerPassword\": \"owner123\",\n  \"encryptionType\": \"AES_128\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/pdf/create-secured",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "pdf", "create-secured"]
+            }
+          }
+        },
+        {
+          "name": "4. 建立安全 PDF (全部允許)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"開放權限PDF\",\n  \"content\": \"這是一份允許所有操作的 PDF 文件。\",\n  \"allowPrinting\": \"Y\",\n  \"allowHighQualityPrinting\": \"Y\",\n  \"allowAssembly\": \"Y\",\n  \"allowCopy\": \"Y\",\n  \"allowScreenReaders\": \"Y\",\n  \"allowModifyContents\": \"Y\",\n  \"allowModifyAnnotations\": \"Y\",\n  \"allowFillIn\": \"Y\",\n  \"userPassword\": null,\n  \"ownerPassword\": \"test123\",\n  \"encryptionType\": \"AES_128\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/pdf/create-secured",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "pdf", "create-secured"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "POST",
+        "header": [
+          {"key": "Content-Type", "value": "application/json"}
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/pdf/health",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "pdf", "health"]
+        }
+      }
+    }
+  ]
+}
