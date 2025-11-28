@@ -210,6 +210,15 @@ public class PdfRewriterService {
         document.addAuthor(getOriginalAuthor(reader));
         document.addSubject(getOriginalSubject(reader));
 
+        // 套用安全性設定
+        if (request.isPreserveSecurity() && !request.isRemoveSecurity() && securityInfo.isEncrypted()) {
+            applySecuritySettings(copy, request, securityInfo);
+        } else if (!request.isRemoveSecurity()) {
+            log.info("未保留安全性設定或原 PDF 未加密");
+        } else {
+            log.info("已移除所有安全性設定");
+        }
+
         // 開啟文件
         document.open();
 
@@ -218,15 +227,6 @@ public class PdfRewriterService {
             PdfImportedPage page = copy.getImportedPage(reader, i);
             copy.addPage(page);
             log.debug("複製第 {}/{} 頁", i, totalPages);
-        }
-
-        // 套用安全性設定
-        if (request.isPreserveSecurity() && !request.isRemoveSecurity() && securityInfo.isEncrypted()) {
-            applySecuritySettings(copy, request, securityInfo);
-        } else if (!request.isRemoveSecurity()) {
-            log.info("未保留安全性設定或原 PDF 未加密");
-        } else {
-            log.info("已移除所有安全性設定");
         }
 
         document.close();
